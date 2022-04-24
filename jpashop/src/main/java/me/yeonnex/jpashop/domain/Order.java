@@ -18,7 +18,7 @@ public class Order {
     @Column(name = "order_id") // DBA 가 선호하는 방식
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id") // FK 이름이 member_id 가 된다
     private Member member;
 
