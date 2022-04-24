@@ -1,10 +1,14 @@
 package me.yeonnex.jpashop.domain;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.yeonnex.jpashop.domain.item.Item;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
 public class OrderItem {
     @Id
     @GeneratedValue

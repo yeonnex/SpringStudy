@@ -15,7 +15,6 @@ public class Category {
     @Id
     @GeneratedValue
     private Long id;
-
     private String name;
 
     @ManyToMany
@@ -30,5 +29,11 @@ public class Category {
 
     @OneToMany(mappedBy = "parent")
     private List<Category> child = new ArrayList<>();
+
+    // [연관관계 편의 메서드]
+    public void addChildCategory(Category child){
+        this.child.add(child);
+        child.setParent(this);
+    }
 
 }
