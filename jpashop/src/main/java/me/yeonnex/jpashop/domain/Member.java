@@ -19,6 +19,9 @@ public class Member {
 
     private String name;
 
+    @Column(unique = true)
+    private String email;
+
     @Embedded
     private Address address;
 
