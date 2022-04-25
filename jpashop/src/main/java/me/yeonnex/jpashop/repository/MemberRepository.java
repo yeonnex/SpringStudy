@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class MemberRepository {
@@ -24,10 +25,10 @@ public class MemberRepository {
     }
 
     // 이메일로 회원 조회 - 이메일은 중복되지 않음
-    public Member findByEmail(String email){
+    public Optional<Member> findByEmail(String email){
         return em.createQuery("select m from Member m where m.email= :email", Member.class)
-                        .setParameter("email", email)
-                        .getSingleResult();
+                .setParameter("email", email)
+                .getResultStream().findAny();
     }
 
     // 모든 회원 조회

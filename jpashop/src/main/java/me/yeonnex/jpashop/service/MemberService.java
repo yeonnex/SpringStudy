@@ -2,11 +2,12 @@ package me.yeonnex.jpashop.service;
 
 import me.yeonnex.jpashop.domain.Member;
 import me.yeonnex.jpashop.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 
@@ -25,17 +26,19 @@ public class MemberService {
      * 회원 가입
      */
     @Transactional // 기본값이 readOnly=false. 읽기가 아닌 쓰기 작업의 경우, readOnly=true 는 절대 안됨. 데이터 변경이 안됨.
-    public Long join(Member member){
+    public Long join(Member member) throws Exception {
         validateDuplicateMember(member); // 중복회원 검증
         memberRepository.save(member);
         return member.getId();
     }
 
-    private void validateDuplicateMember(Member member) {
-        Member findMember = memberRepository.findByEmail(member.getEmail());
-        if (findMember.getId() != null){ // 만약 같은 이메일이 Member 에 있다면
-            throw new IllegalStateException("이미 존재하는 회원입니다!");
+    private void validateDuplicateMember(Member member) throws Exception {
+
+        Optional<Member> findMember = memberRepository.findByEmail(member.getEmail());
+        if (findMember.isPresent()){
+            throw new Exception("해당 이메일로 가입된 계졍이 있습니다");
         }
+
     }
 
     /**
@@ -48,7 +51,7 @@ public class MemberService {
     /**
      * 유니크키인 email 로 회원 조회
      */
-    public Member findByEmail(String email){
+    public Optional<Member> findByEmail(String email){
         return memberRepository.findByEmail(email);
     }
 
